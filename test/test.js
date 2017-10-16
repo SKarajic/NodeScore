@@ -160,7 +160,7 @@ describe('Player', () => {
 
 describe('Utilities', () => {
     it('should fail parsing a JSON', (done) => {
-        getJSON('http://lorempixel.com/4/4/')
+        getJSON('http://lorempixel.com/1/1/')
             .catch((err) => {
                 expect(err).to.be.an.instanceOf(Error);
                 done();
