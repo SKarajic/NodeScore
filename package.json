@@ -4,7 +4,7 @@
   "description": "Wrapper for Football API",
   "main": "dist",
   "scripts": {
-    "test": "nyc mocha --timeout 15000 --require babel-core/register && eslint src",
+    "test": "nyc mocha --timeout 60000 --require babel-core/register && eslint src",
     "build": "babel src -s -d dist"
   },
   "author": "Sandi Karajic",
