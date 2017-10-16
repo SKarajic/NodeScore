@@ -148,6 +148,25 @@ describe('Player', () => {
             })
             .catch((err) => console.log(err));
     });
+
+    it('should fail getting Player from Team through TransferIn', (done) => {
+        ns.team(9002)
+            .then((team) => team.transfers.in[0].player())
+            .then((player) => {
+            })
+            .catch((err) => {
+                expect(err).to.be.an.instanceOf(Error);
+                expect(err.statusCode).to.equal(404);
+                done();
+            });
+    });
+    it('should fail getting Player with no id', (done) => {
+        ns.player()
+        .catch((err) => {
+            expect(err).to.be.an.instanceOf(Error);
+            done();
+        });
+    });
 });
 
 describe('Utilities', () => {
