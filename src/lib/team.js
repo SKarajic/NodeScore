@@ -302,11 +302,11 @@ class Statistics {
     }
 
     /**
-     * returns total amount of wins
+     * returns total amount of goals scored and conceded
      * 
-     * @return {goals} - total amount of wins
+     * @return {goals} - total amount of goals scored and conceded
      */
-    games() {
+    goals() {
         const scored = '';
 
         /**
