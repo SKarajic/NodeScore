@@ -12,9 +12,11 @@ export function getJSON(url) {
             const {statusCode} = res;
             if (statusCode !== 200) {
                 res.resume();
-                reject(new Error(`${statusCode} statuscode.\n` +
+                let err = new Error(`${statusCode} statuscode.\n` +
                 `Url requested: ${url}. \nResponse headers: ` +
-                `${JSON.stringify(res.headers)}`));
+                `${JSON.stringify(res.headers)}`);
+                err.statusCode = statusCode;
+                reject(err);
             }
 
             res.setEncoding('utf8');

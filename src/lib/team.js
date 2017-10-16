@@ -182,7 +182,7 @@ class Transfer {
     /**
      * returns one player in promise form
      * 
-     * @return {Promise<Competition, Error>} returns a
+     * @return {Promise<Player, Error>} returns a
      * Promise containing a **Player** object.
      */
     player() {

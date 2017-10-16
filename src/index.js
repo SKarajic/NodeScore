@@ -2,6 +2,7 @@ import {
     Competition,
     Standing,
     Team,
+    Player,
     getJSON,
     createObject,
 } from './lib';
@@ -94,6 +95,14 @@ export default module.exports = class NodeScore {
      * Promise containing  a Player object.
      */
     player(id) {
-        return Promise.resolve({id});
+        let self = this;
+        return new Promise((resolve, reject) => {
+            id = (typeof id !== 'undefined' && id !== null) ? id : '';
+            const url = `${this.url}player/${id}${this.auth}`;
+            getJSON(url)
+                .then((player) => resolve(
+                    createObject(Player, self, player)))
+                .catch((err) => reject(err));
+        });
     }
 };

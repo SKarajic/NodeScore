@@ -122,10 +122,10 @@ describe('Teams', () => {
 });
 
 describe('Player', () => {
-    it('should get Player with id 1', (done) => {
-        ns.player(1)
+    it('should get Player with id 237', (done) => {
+        ns.player(237)
             .then((player) => {
-                expect(player.id).to.equal(1);
+                expect(player.id).to.equal(237);
                 done();
             })
             .catch((err) => console.log(err));
@@ -141,7 +141,7 @@ describe('Player', () => {
     });
     it('should get Player from Team through TransferIn', (done) => {
         ns.team(9002)
-            .then((team) => team.transfers.in[0].player())
+            .then((team) => team.transfers.in[1].player())
             .then((player) => {
                 expect(typeof player.id).to.equal('number');
                 done();
