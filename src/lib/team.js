@@ -103,8 +103,10 @@ class Member {
     }
 
     /**
+     * returns one player in promise form
      * 
-     * @return {Player}
+     * @return {Promise<Competition, Error>} returns a
+     * Promise containing a **Player** object.
      */
     player() {
         return this.wrapper.player(this.id);
@@ -122,9 +124,11 @@ class Member {
 /** Class representing a sidelined squad member. */
 class Sidelined {
     /**
+     * creates a **Sidelined** object to be used as an inner class 
+     * for the **Member** class.
      * 
-     * @param {*} wrapper 
-     * @param {*} sidelined 
+     * @param {NodeScore} wrapper - the API wrapper object
+     * @param {Object} sidelined - sidelined from the JSON
      */
     constructor(wrapper, sidelined) {
         const s = sidelined;
@@ -138,19 +142,17 @@ class Sidelined {
 /** Class representing a squad. */
 class Squad {
     /**
+     * creates a **Squad** object to be used as an inner class 
+     * for the **Team** class.
      * 
-     * @param {*} wrapper 
-     * @param {*} team 
+     * @param {NodeScore} wrapper - the API wrapper object
+     * @param {Object} team - team from the JSON
      */
     constructor(wrapper, team) {
         this.members = createMembers(wrapper, team);
     }
 
-    /**
-     * creates a JSON from object
-     * 
-     * @return {*} 
-     */
+    /** @return {*} */
     toJSON() {
         let copy = Object.assign({}, this);
         delete copy.wrapper;
@@ -162,10 +164,12 @@ class Squad {
 /** Class representing a transfer. */
 class Transfer {
     /**
+     * creates a **Transfer** object to be used as an inner class 
+     * for the **Team** class.
      * 
-     * @param {*} wrapper 
-     * @param {*} player 
-     */    
+     * @param {NodeScore} wrapper - the API wrapper object
+     * @param {Object} player - player from the JSON
+     */ 
     constructor(wrapper, player) {
         const {id, name, date} = player;
 
@@ -176,8 +180,10 @@ class Transfer {
     }
 
     /**
+     * returns one player in promise form
      * 
-     * @return {Player}
+     * @return {Promise<Competition, Error>} returns a
+     * Promise containing a **Player** object.
      */
     player() {
         return this.wrapper.player(this.id);
@@ -199,10 +205,12 @@ class Transfer {
 /** Class representing a transfer in. */
 class TransferIn extends Transfer {
     /**
+     * creates a **TransferIn** object to be used as an inner class 
+     * for the **Team** class.
      * 
-     * @param {*} wrapper 
-     * @param {*} player 
-     */
+     * @param {NodeScore} wrapper - the API wrapper object
+     * @param {Object} player - player from the JSON
+     */ 
     constructor(wrapper, player) {
         const {team_id, from_team} = player;
         super(wrapper, player);
@@ -217,10 +225,12 @@ class TransferIn extends Transfer {
 /** Class representing a transfer in. */
 class TransferOut extends Transfer {
     /**
+     * creates a **TransferOut** object to be used as an inner class 
+     * for the **Team** class.
      * 
-     * @param {*} wrapper 
-     * @param {*} player 
-     */
+     * @param {NodeScore} wrapper - the API wrapper object
+     * @param {Object} player - player from the JSON
+     */ 
     constructor(wrapper, player) {
         const {team_id, to_team} = player;
         super(wrapper, player);
@@ -235,9 +245,11 @@ class TransferOut extends Transfer {
 /** Class representing a team's statistics */
 class Statistics {
     /**
+     * creates a **Statistics** object to be used as an inner class 
+     * for the **Team** class.
      * 
-     * @param {*} statistics 
-     */
+     * @param {Object} statistics - statistics from the JSON
+     */ 
     constructor(statistics) {
         const st = statistics;
         const home = {
@@ -313,8 +325,8 @@ class Statistics {
 /**
  * creates date object from string from JSON
  * 
- * @param {string} dateString 
- * @return {Date}
+ * @param {string} dateString - the datestring from the JSON
+ * @return {Date} - the date created from the datestring
  */
 function createDateObject(dateString) {
     let ss = dateString.split('.');
@@ -326,9 +338,11 @@ function createDateObject(dateString) {
 }
 
 /**
- * @param {*} wrapper 
- * @param {*} team 
- * @return {Member[]}
+ * creates an array of members
+ * 
+ * @param {NodeScore} wrapper - the API wrapper object
+ * @param {Object} team - team from the JSON
+ * @return {Member[]} - an array of **Member** objects
  */
 function createMembers(wrapper, team) {
     let members = [];
@@ -346,11 +360,13 @@ function createMembers(wrapper, team) {
 }
 
 /**
+ * creates a **transfers** object containing an array of **TransferIn** 
+ * objects and an array of **TransferOut** objects
  * 
- * @param {*} wrapper 
- * @param {*} team 
- * 
- * @return {transfers}
+ * @param {NodeScore} wrapper - the API wrapper object
+ * @param {Object} team - team from the JSON
+ * @return {transfers} - an object containing an array of **TransferIn** 
+ * objects and an array of **TransferOut** objects
  */
 function createTransfers(wrapper, team) {
     /**
@@ -374,8 +390,10 @@ function createTransfers(wrapper, team) {
 }
 
 /**
- * @param {string} val 
- * @return {number}
+ * filters and creates a number out of a string
+ * 
+ * @param {string} val - the string containing the int
+ * @return {number} an int created from a string
  */
 function filterInt(val) {
     return (val == '-' || val == '') ? 0: parseInt(val);
