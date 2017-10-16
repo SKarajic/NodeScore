@@ -189,11 +189,7 @@ class Transfer {
         return this.wrapper.player(this.id);
     }
 
-    /**
-     * creates a JSON from object
-     * 
-     * @return {*} 
-     */
+    /** @return {*} */
     toJSON() {
         let copy = Object.assign({}, this);
         delete copy.wrapper;

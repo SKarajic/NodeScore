@@ -85,4 +85,15 @@ export default module.exports = class NodeScore {
                 .catch((err) => reject(err));
         });
     }
+
+    /**
+     * returns one player in promise form
+     * 
+     * @param {number} id - the id of the player
+     * @return {Promise<Player, Error>} returns a
+     * Promise containing  a Player object.
+     */
+    player(id) {
+        return Promise.resolve({id});
+    }
 };

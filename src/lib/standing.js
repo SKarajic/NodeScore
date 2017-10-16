@@ -1,4 +1,5 @@
 import Competition from './competition';
+import Team from './team';
 
 /** Class representing team's standing. */
 export default class Standing {
@@ -35,6 +36,16 @@ export default class Standing {
      */
     competition() {
         return this.wrapper.competition(this.compId);
+    }
+
+    /**
+     * returns the team of this standing in promise form
+     * 
+     * @return {Promise<Team, Error>} returns a
+     * Promise containing a Team object.
+     */
+    team() {
+        return this.wrapper.team(this.teamId);
     }
 
     /**
@@ -102,14 +113,8 @@ export default class Standing {
     }
 };
 
-/** 
- * @interface Stats
- * Interface representing team's standing statistics. 
- * */
-class Stats {};
-
 /** Class representing team's standing statistics on the home side. */
-class Home extends Stats {
+class Home {
     /**
      * creates a **Home** object to be used as an inner class 
      * for the **Standing** class.
@@ -117,7 +122,6 @@ class Home extends Stats {
      * @param {*} standing - standing from the JSON
      */
     constructor(standing) {
-        super();
         const s = standing;
         this.wins = parseInt(s.home_w);
         this.draws = parseInt(s.home_d);
@@ -129,7 +133,7 @@ class Home extends Stats {
 }
 
 /** Class representing team's standing statistics on the away side. */
-class Away extends Stats {
+class Away {
     /**
      * creates an **Away** object to be used as an inner class 
      * for the **Standing** class.
@@ -137,7 +141,6 @@ class Away extends Stats {
      * @param {*} standing - standing from the JSON
      */
     constructor(standing) {
-        super();
         const s = standing;
         this.wins = parseInt(s.away_w);
         this.draws = parseInt(s.away_d);
