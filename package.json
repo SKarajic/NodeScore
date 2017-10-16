@@ -1,0 +1,31 @@
+{
+  "name": "nodescore",
+  "version": "0.0.0",
+  "description": "Wrapper for Football API",
+  "main": "dist",
+  "scripts": {
+    "test": "nyc mocha --timeout 10000 --require babel-core/register && eslint src",
+    "build": "babel src -s -d dist"
+  },
+  "author": "Sandi Karajic",
+  "license": "ISC",
+  "babel": {
+    "presets": [
+      "env"
+    ]
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.0",
+    "chai": "^4.1.2",
+    "dotenv": "^4.0.0",
+    "eslint": "^4.8.0",
+    "eslint-config-google": "^0.9.1",
+    "mocha": "^4.0.1",
+    "nyc": "^11.2.1"
+  },
+  "dependencies": {
+    "fs-extra": "^4.0.2",
+    "promise": "^8.0.1"
+  }
+}
