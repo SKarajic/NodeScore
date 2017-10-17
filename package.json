@@ -1,12 +1,13 @@
 {
   "name": "nodescore",
-  "version": "0.0.0",
+  "version": "0.1.0-alpha",
   "description": "Wrapper for Football API",
-  "main": "dist",
+  "main": "build",
   "scripts": {
-    "test": "nyc mocha --timeout 10000 --require babel-core/register && eslint src",
+    "test": "nyc mocha --reporter spec --timeout 10000 --require babel-core/register && eslint src",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "build": "babel src -s -d dist"
+    "build": "babel src -s -d build",
+    "prepublishOnly": "npm test && npm run build"
   },
   "author": "Sandi Karajic",
   "license": "ISC",
