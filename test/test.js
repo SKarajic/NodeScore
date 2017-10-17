@@ -174,6 +174,7 @@ describe('Player', () => {
             })
             .catch((err) => done(err));
     });
+    /*
     it('should get Player from Team through TransferIn', (done) => {
         ns.team(9002)
             .then((team) => team.transfers.in[1].player())
@@ -192,6 +193,7 @@ describe('Player', () => {
                 done(err);
             });
     });
+    */
     it('should fail getting Player with no id', (done) => {
         ns.player()
         .catch((err) => {
