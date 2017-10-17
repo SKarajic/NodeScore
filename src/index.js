@@ -153,19 +153,22 @@ export default module.exports = class NodeScore {
                         .then(() => {
                             fs.writeJSON(
                                 `./.cache/${type}/${id}.json`,
-                                reqData
+                                reqData,
+                                {spaces: 4}
                             );
                             cache[id].request = false;
                             fs.writeJSON(
                                 `./.cache/manager.json`,
-                                this.cacheManager
+                                this.cacheManager,
+                                {spaces: 4}
                             );
                         })
                         .catch((err) => {
                             cache[id].request = false;
                             fs.writeJSON(
                                 `./.cache/manager.json`,
-                                this.cacheManager
+                                this.cacheManager,
+                                {spaces: 4}
                             );
                             reject(err);
                         });
