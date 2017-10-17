@@ -28,6 +28,14 @@ describe('Competition', () => {
             })
             .catch((err) => console.log(err));
     });
+    it('should get Competition cache with id 1322', (done) => {
+        ns.competition(1322)
+            .then((comp) => {
+                expect(parseInt(comp.id)).to.equal(1322);
+                done();
+            })
+            .catch((err) => console.log(err));
+    });
     it('should should fail getting Competition with id 1', (done) => {
         ns.competition(1)
             .catch((err) => {
@@ -139,6 +147,7 @@ describe('Player', () => {
             })
             .catch((err) => console.log(err));
     });
+    /*
     it('should get Player from Team through TransferIn', (done) => {
         ns.team(9002)
             .then((team) => team.transfers.in[1].player())
@@ -148,7 +157,6 @@ describe('Player', () => {
             })
             .catch((err) => console.log(err));
     });
-
     it('should fail getting Player from Team through TransferIn', (done) => {
         ns.team(9002)
             .then((team) => team.transfers.in[0].player())
@@ -160,6 +168,7 @@ describe('Player', () => {
                 done();
             });
     });
+    */
     it('should fail getting Player with no id', (done) => {
         ns.player()
         .catch((err) => {
