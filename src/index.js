@@ -21,6 +21,7 @@ export default module.exports = class NodeScore {
         this.url = 'http://api.football-api.com/2.0/';
         this.auth = `?Authorization=${key}`;
         this.cacheManager = {
+            init: [false, false],
             competitions: {},
             standings: {},
             teams: {},
@@ -40,7 +41,7 @@ export default module.exports = class NodeScore {
         return new Promise((resolve, reject) => {
             id = (typeof id !== 'undefined' && id !== null) ? id : '';
             const url = `${this.url}competitions/${id}${this.auth}`;
-            getData(this.cacheManager, 'competitions', id, url)
+            this.getData('competitions', id, url, (7 * 24 * 3600 * 1000))
                 .then((competition) => resolve(
                     createObject(Competition, self, competition)))
                 .catch((err) => reject(err));
@@ -76,7 +77,7 @@ export default module.exports = class NodeScore {
         let self = this;
         return new Promise((resolve, reject) => {
             const url = `${this.url}standings/${compId}${this.auth}`;
-            getData(this.cacheManager, 'standings', compId, url)
+            this.getData('standings', compId, url, (2 * 3600 * 1000))
                 .then((standing) => resolve(
                     createObject(Standing, self, standing)))
                 .catch((err) => reject(err));
@@ -95,7 +96,7 @@ export default module.exports = class NodeScore {
         return new Promise((resolve, reject) => {
             id = (typeof id !== 'undefined' && id !== null) ? id : '';
             const url = `${this.url}team/${id}${this.auth}`;
-            getData(this.cacheManager, 'teams', id, url)
+            this.getData('teams', id, url, (2 * 3600 * 1000))
                 .then((team) => resolve(
                     createObject(Team, self, team)))
                 .catch((err) => reject(err));
@@ -114,64 +115,102 @@ export default module.exports = class NodeScore {
         return new Promise((resolve, reject) => {
             id = (typeof id !== 'undefined' && id !== null) ? id : '';
             const url = `${this.url}player/${id}${this.auth}`;
-            getData(this.cacheManager, 'players', id, url)
+            this.getData('players', id, url, (2 * 3600 * 1000))
                 .then((player) => resolve(
                     createObject(Player, self, player)))
                 .catch((err) => reject(err));
         });
     }
-};
 
-/**
- * 
- * @param {*} cacheManager
- * @param {*} type 
- * @param {*} id 
- * @param {*} url 
- * 
- * @return {*}
- */
-function getData(cacheManager, type, id, url) {
-    return new Promise((resolve, reject) => {
-        let cache = cacheManager[type];
-        let reqData;
-        if (
-            cache[id] == undefined ||
-            cache[id].expiration <= new Date().getTime()
-        ) {
-            cache[id] = {
-                request: true,
-                expiration: new Date().getTime() + 24 * 3600 * 1000,
-            };
-            getJSON(url)
-                .then((data) => {
-                    resolve(data);
-                    reqData = data;
-                    return fs.ensureDir(`./.cache/${type}`);
-                })
-                .then(() => {
-                    fs.writeJSON(`./.cache/${type}/${id}.json`, reqData);
-                    cache[id].request = false;
-                    fs.writeJSON(`./.cache/manager.json`, cacheManager);
-                })
-                .catch((err) => {
-                    delete cache[id];
-                    fs.writeJSON(`./.cache/manager.json`, cacheManager);
-                    reject(err);
-                });
-        } else if (cache[id].request) {
-            watch(cache[id], 'request', () => {
-                if (!cache[id].request) {
-                    unwatch(cache[id], 'request');
+    /**
+     * 
+     * @param {*} type 
+     * @param {*} id 
+     * @param {*} url 
+     * @param {*} time
+     * 
+     * @return {*}
+     */
+    getData(type, id, url, time) {
+        return new Promise((resolve, reject) => {
+            this.checkCache(() => {
+                let cache = this.cacheManager[type];
+                let reqData;
+                if (
+                    cache[id] == undefined ||
+                    cache[id].expiration <= new Date().getTime()
+                ) {
+                    cache[id] = {
+                        request: true,
+                        expiration: new Date().getTime() + time,
+                    };
+                    getJSON(url)
+                        .then((data) => {
+                            resolve(data);
+                            reqData = data;
+                            return fs.ensureDir(`./.cache/${type}`);
+                        })
+                        .then(() => {
+                            fs.writeJSON(
+                                `./.cache/${type}/${id}.json`,
+                                reqData
+                            );
+                            cache[id].request = false;
+                            fs.writeJSON(
+                                `./.cache/manager.json`,
+                                this.cacheManager
+                            );
+                        })
+                        .catch((err) => {
+                            cache[id].request = false;
+                            fs.writeJSON(
+                                `./.cache/manager.json`,
+                                this.cacheManager
+                            );
+                            reject(err);
+                        });
+                } else if (cache[id].request) {
+                    watch(cache[id], 'request', () => {
+                        if (!cache[id].request) {
+                            unwatch(cache[id], 'request');
+                            fs.readJSON(`./.cache/${type}/${id}.json`)
+                                .then((data) => resolve(data))
+                                .catch((err) => reject(err));
+                        }
+                    });
+                } else {
                     fs.readJSON(`./.cache/${type}/${id}.json`)
                         .then((data) => resolve(data))
                         .catch((err) => reject(err));
                 }
             });
+        });
+    }
+
+    /**
+     * 
+     * @param {*} callback 
+     */
+    checkCache(callback) {
+        if (!this.cacheManager.init[0]) {
+            if (!this.cacheManager.init[1]) {
+                this.cacheManager.init[1] = true;
+                fs.readJSON('./.cache/manager.json')
+                    .then((data) => {
+                        this.cacheManager.init[0] = true;
+                        this.cacheManager.init[1] = false;
+                        this.cacheManager = data;
+                        callback();
+                    })
+                    .catch(() => {
+                        this.cacheManager.init[0] = true;
+                        this.cacheManager.init[1] = false;
+                        callback();
+                    });
+            } else {
+            }
         } else {
-            fs.readJSON(`./.cache/${type}/${id}.json`)
-                .then((data) => resolve(data))
-                .catch((err) => reject(err));
+            callback();
         }
-    });
-}
+    }
+};

@@ -18,7 +18,7 @@ describe('Competition', () => {
                 expect(typeof comps[0].name).to.equal('string');
                 done();
             })
-            .catch((err) => console.log(err));
+            .catch((err) => done(err));
     });
     it('should get Competition with id 1322', (done) => {
         ns.competition(1322)
@@ -26,7 +26,7 @@ describe('Competition', () => {
                 expect(parseInt(comp.id)).to.equal(1322);
                 done();
             })
-            .catch((err) => console.log(err));
+            .catch((err) => done(err));
     });
     it('should get Competition cache with id 1322', (done) => {
         ns.competition(1322)
@@ -34,7 +34,7 @@ describe('Competition', () => {
                 expect(parseInt(comp.id)).to.equal(1322);
                 done();
             })
-            .catch((err) => console.log(err));
+            .catch((err) => done(err));
     });
     it('should should fail getting Competition with id 1', (done) => {
         ns.competition(1)
@@ -50,7 +50,7 @@ describe('Competition', () => {
                 expect(comp.id).to.equal(1322);
                 done();
             })
-            .catch((err) => console.log(err));
+            .catch((err) => done(err));
     });
 });
 
@@ -64,7 +64,18 @@ describe('Standings', () => {
                 expect(typeof stands[0].season).to.equal('string');
                 done();
             })
-            .catch((err) => console.log(err));
+            .catch((err) => done(err));
+    });
+    it('should get Standings cache', (done) => {
+        ns.standings(1322)
+            .then((stands) => {
+                expect(typeof JSON.parse(JSON.stringify(stands[0])).wrapper)
+                    .to.equal('undefined');
+                expect(Array.isArray(stands)).to.equal(true);
+                expect(typeof stands[0].season).to.equal('string');
+                done();
+            })
+            .catch((err) => done(err));
     });
     it('should get Standings from Competition', (done) => {
         ns.competition(1322)
@@ -84,7 +95,7 @@ describe('Standings', () => {
                 expect(typeof stand.away.gamesPlayed).to.equal('number');
                 done();
             })
-            .catch((err) => console.log(err));
+            .catch((err) => done(err));
     });
     it('should should fail getting Standings from Competition', (done) => {
         ns.standings(1)
@@ -109,7 +120,15 @@ describe('Teams', () => {
                 expect(typeof team.statistics.home.wins).to.equal('number');
                 done();
             })
-            .catch((err) => console.log(err));
+            .catch((err) => done(err));
+    });
+    it('should get Team cache with id 9002', (done) => {
+        ns.team(9002)
+            .then((team) => {
+                expect(team.id).to.equal(9002);
+                done();
+            })
+            .catch((err) => done(err));
     });
     it('should get Team from Standing', (done) => {
         ns.standings(1322)
@@ -118,7 +137,7 @@ describe('Teams', () => {
                 expect(typeof team.id).to.equal('number');
                 done();
             })
-            .catch((err) => console.log(err));
+            .catch((err) => done(err));
     });
     it('should should fail getting Team with no id', (done) => {
         ns.team()
@@ -136,7 +155,15 @@ describe('Player', () => {
                 expect(player.id).to.equal(237);
                 done();
             })
-            .catch((err) => console.log(err));
+            .catch((err) => done(err));
+    });
+    it('should get Player cache with id 237', (done) => {
+        ns.player(237)
+            .then((player) => {
+                expect(player.id).to.equal(237);
+                done();
+            })
+            .catch((err) => done(err));
     });
     it('should get Player from Team through Squad', (done) => {
         ns.team(9002)
@@ -145,9 +172,8 @@ describe('Player', () => {
                 expect(typeof player.id).to.equal('number');
                 done();
             })
-            .catch((err) => console.log(err));
+            .catch((err) => done(err));
     });
-    /*
     it('should get Player from Team through TransferIn', (done) => {
         ns.team(9002)
             .then((team) => team.transfers.in[1].player())
@@ -155,20 +181,17 @@ describe('Player', () => {
                 expect(typeof player.id).to.equal('number');
                 done();
             })
-            .catch((err) => console.log(err));
+            .catch((err) => done(err));
     });
     it('should fail getting Player from Team through TransferIn', (done) => {
         ns.team(9002)
             .then((team) => team.transfers.in[0].player())
-            .then((player) => {
-            })
             .catch((err) => {
                 expect(err).to.be.an.instanceOf(Error);
                 expect(err.statusCode).to.equal(404);
-                done();
+                done(err);
             });
     });
-    */
     it('should fail getting Player with no id', (done) => {
         ns.player()
         .catch((err) => {
@@ -180,12 +203,12 @@ describe('Player', () => {
 
 describe('Utilities', () => {
     it('should fail parsing a JSON', (done) => {
-        getJSON('http://lorempixel.com/1/1/')
+        getJSON(process.env.XML_URL)
             .catch((err) => {
                 expect(err).to.be.an.instanceOf(Error);
                 done();
             });
-    });
+    }).timeout(30000);
     it('should fail getting something', (done) => {
         getJSON('http://alinkwithnoendpoint.kr/')
             .catch((err) => {
@@ -194,3 +217,7 @@ describe('Utilities', () => {
             });
     });
 });
+
+after(() => {
+    fs.remove('./.cache')
+})
