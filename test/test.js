@@ -218,6 +218,4 @@ describe('Utilities', () => {
     });
 });
 
-after(() => {
-    fs.remove('./.cache')
-})
+after(() => fs.remove('./.cache'))
