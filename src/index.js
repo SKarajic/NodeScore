@@ -38,10 +38,9 @@ export default module.exports = class NodeScore {
     competition(id) {
         let self = this;
         return new Promise((resolve, reject) => {
-            let {competitions: cache} = this.cacheManager;
             id = (typeof id !== 'undefined' && id !== null) ? id : '';
             const url = `${this.url}competitions/${id}${this.auth}`;
-            getData(cache, 'competitions', id, url)
+            getData(this.cacheManager, 'competitions', id, url)
                 .then((competition) => resolve(
                     createObject(Competition, self, competition)))
                 .catch((err) => reject(err));
@@ -76,9 +75,8 @@ export default module.exports = class NodeScore {
     standings(compId) {
         let self = this;
         return new Promise((resolve, reject) => {
-            let {standings: cache} = this.cacheManager;
             const url = `${this.url}standings/${compId}${this.auth}`;
-            getData(cache, 'standings', compId, url)
+            getData(this.cacheManager, 'standings', compId, url)
                 .then((standing) => resolve(
                     createObject(Standing, self, standing)))
                 .catch((err) => reject(err));
@@ -95,10 +93,9 @@ export default module.exports = class NodeScore {
     team(id) {
         let self = this;
         return new Promise((resolve, reject) => {
-            let {teams: cache} = this.cacheManager;
             id = (typeof id !== 'undefined' && id !== null) ? id : '';
             const url = `${this.url}team/${id}${this.auth}`;
-            getData(cache, 'teams', id, url)
+            getData(this.cacheManager, 'teams', id, url)
                 .then((team) => resolve(
                     createObject(Team, self, team)))
                 .catch((err) => reject(err));
@@ -115,10 +112,9 @@ export default module.exports = class NodeScore {
     player(id) {
         let self = this;
         return new Promise((resolve, reject) => {
-            let {players: cache} = this.cacheManager;
             id = (typeof id !== 'undefined' && id !== null) ? id : '';
             const url = `${this.url}player/${id}${this.auth}`;
-            getData(cache, 'players', id, url)
+            getData(this.cacheManager, 'players', id, url)
                 .then((player) => resolve(
                     createObject(Player, self, player)))
                 .catch((err) => reject(err));
@@ -128,15 +124,16 @@ export default module.exports = class NodeScore {
 
 /**
  * 
- * @param {*} cache 
+ * @param {*} cacheManager
  * @param {*} type 
  * @param {*} id 
  * @param {*} url 
  * 
  * @return {*}
  */
-function getData(cache, type, id, url) {
+function getData(cacheManager, type, id, url) {
     return new Promise((resolve, reject) => {
+        let cache = cacheManager[type];
         let reqData;
         if (
             cache[id] == undefined ||
@@ -155,9 +152,11 @@ function getData(cache, type, id, url) {
                 .then(() => {
                     fs.writeJSON(`./.cache/${type}/${id}.json`, reqData);
                     cache[id].request = false;
+                    fs.writeJSON(`./.cache/manager.json`, cacheManager);
                 })
                 .catch((err) => {
-                    cache[id].request = false;
+                    delete cache[id];
+                    fs.writeJSON(`./.cache/manager.json`, cacheManager);
                     reject(err);
                 });
         } else if (cache[id].request) {
