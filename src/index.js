@@ -41,7 +41,7 @@ export default module.exports = class NodeScore {
         return new Promise((resolve, reject) => {
             id = (typeof id !== 'undefined' && id !== null) ? id : '';
             const url = `${this.url}competitions/${id}${this.auth}`;
-            this.getData('competitions', id, url, (7 * 24 * 3600 * 1000))
+            this.getData('competitions', id, url, (24 * 3600 * 1000))
                 .then((competition) => resolve(
                     createObject(Competition, self, competition)))
                 .catch((err) => reject(err));
@@ -58,7 +58,7 @@ export default module.exports = class NodeScore {
         let self = this;
         return new Promise((resolve, reject) => {
             const url = `${this.url}competitions/${this.auth}`;
-            getJSON(url)
+            this.getData('competitions', 'all', url, (24 * 3600 * 1000))
                 .then((competition) => resolve(
                     createObject(Competition, self, competition)))
                 .catch((err) => reject(err));

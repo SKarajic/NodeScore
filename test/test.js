@@ -174,7 +174,7 @@ describe('Player', () => {
             })
             .catch((err) => done(err));
     });
-    xit('should get Player from Team through TransferIn', (done) => {
+    it('should get Player from Team through TransferIn', (done) => {
         ns.team(9002)
             .then((team) => team.transfers.in[1].player())
             .then((player) => {
@@ -183,13 +183,13 @@ describe('Player', () => {
             })
             .catch((err) => done(err));
     });
-    xit('should fail getting Player from Team through TransferIn', (done) => {
+    it('should fail getting Player from Team through TransferIn', (done) => {
         ns.team(9002)
             .then((team) => team.transfers.in[0].player())
             .catch((err) => {
                 expect(err).to.be.an.instanceOf(Error);
                 expect(err.statusCode).to.equal(404);
-                done(err);
+                done();
             });
     });
     it('should fail getting Player with no id', (done) => {
