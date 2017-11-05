@@ -28,13 +28,13 @@ export default class Match {
         this.local = {
             id: parseInt(m.localteam_id),
             name: m.localteam_name,
-            score: m.localteam_score,
+            score: parseInt(m.localteam_score),
             penalty: m.penalty_local,
         };
         this.visitor = {
             id: parseInt(m.visitorteam_id),
             name: m.visitorteam_name,
-            score: m.visitorteam_score,
+            score: parseInt(m.visitorteam_score),
             penalty: m.penalty_visitor,
         };
         let events = [];
