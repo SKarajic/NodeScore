@@ -4,7 +4,7 @@ import Team from './team';
 /** Class representing team's standing. */
 export default class Standing {
     /**
-    * 
+    *
     * @param {NodeScore} wrapper - the API wrapper object
     * @param {Object} standing - standing from the JSON
     */
@@ -30,7 +30,7 @@ export default class Standing {
 
     /**
      * returns the competition of this standing in promise form
-     * 
+     *
      * @return {Promise<Competition, Error>} returns a
      * Promise containing a Competition object.
      */
@@ -40,7 +40,7 @@ export default class Standing {
 
     /**
      * returns the team of this standing in promise form
-     * 
+     *
      * @return {Promise<Team, Error>} returns a
      * Promise containing a Team object.
      */
@@ -116,9 +116,9 @@ export default class Standing {
 /** Class representing team's standing statistics on the home side. */
 class Home {
     /**
-     * creates a **Home** object to be used as an inner class 
+     * creates a **Home** object to be used as an inner class
      * for the **Standing** class.
-     * 
+     *
      * @param {*} standing - standing from the JSON
      */
     constructor(standing) {
@@ -135,9 +135,9 @@ class Home {
 /** Class representing team's standing statistics on the away side. */
 class Away {
     /**
-     * creates an **Away** object to be used as an inner class 
+     * creates an **Away** object to be used as an inner class
      * for the **Standing** class.
-     * 
+     *
      * @param {*} standing - standing from the JSON
      */
     constructor(standing) {

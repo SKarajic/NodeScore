@@ -1,8 +1,10 @@
+import {createDateObject} from './util';
+
 /** Class representing a player. */
 export default class Player {
     /**
      * creates a **Player** object
-     * 
+     *
      * @param {NodeScore} wrapper - the API wrapper object
      * @param {Object} player - team from the JSON
      */
@@ -25,23 +27,8 @@ export default class Player {
 }
 
 /**
- * creates date object from string from JSON
- * 
- * @param {string} dateString - the datestring from the JSON
- * @return {Date} - the date created from the datestring
- */
-function createDateObject(dateString) {
-    let ss = dateString.split('/');
-    return new Date(
-        parseInt(`${ss[2]}`),
-        parseInt(ss[1]),
-        parseInt(ss[0])
-    );
-}
-
-/**
  * creates height integer from string from JSON
- * 
+ *
  * @param {string} heightString - the heightstring from the JSON
  * @return {number} - the int created from the heightstring
  */
@@ -52,7 +39,7 @@ function parseHeight(heightString) {
 
 /**
  * creates weight integer from string from JSON
- * 
+ *
  * @param {string} weightString - the weightstring from the JSON
  * @return {number} - the int created from the weightstring
  */

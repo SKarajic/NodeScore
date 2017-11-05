@@ -1,10 +1,11 @@
+import {createDateObject} from './util';
 import Player from './player';
 
 /** Class representing a team. */
 export default class Team {
     /**
      * creates a **Team** object
-     * 
+     *
      * @param {NodeScore} wrapper - the API wrapper object
      * @param {Object} team - team from the JSON
      */
@@ -22,8 +23,8 @@ export default class Team {
         /** @type {number[]} */
         this.leagues = leagues;
 
-        /** 
-         * @typedef {Object} venue 
+        /**
+         * @typedef {Object} venue
          * @property {number} id - id of the venue
          * @property {string} name - name of the venue
          * @property {string} city - city of the venue
@@ -68,9 +69,9 @@ export default class Team {
 /** Class representing a squad member. */
 class Member {
     /**
-     * creates a **Member** object to be used as an inner class 
+     * creates a **Member** object to be used as an inner class
      * for the **Team** class.
-     * 
+     *
      * @param {NodeScore} wrapper - the API wrapper object
      * @param {Object} player - player from the JSON
      */
@@ -104,7 +105,7 @@ class Member {
 
     /**
      * returns one player in promise form
-     * 
+     *
      * @return {Promise<Competition, Error>} returns a
      * Promise containing a **Player** object.
      */
@@ -124,9 +125,9 @@ class Member {
 /** Class representing a sidelined squad member. */
 class Sidelined {
     /**
-     * creates a **Sidelined** object to be used as an inner class 
+     * creates a **Sidelined** object to be used as an inner class
      * for the **Member** class.
-     * 
+     *
      * @param {NodeScore} wrapper - the API wrapper object
      * @param {Object} sidelined - sidelined from the JSON
      */
@@ -142,9 +143,9 @@ class Sidelined {
 /** Class representing a squad. */
 class Squad {
     /**
-     * creates a **Squad** object to be used as an inner class 
+     * creates a **Squad** object to be used as an inner class
      * for the **Team** class.
-     * 
+     *
      * @param {NodeScore} wrapper - the API wrapper object
      * @param {Object} team - team from the JSON
      */
@@ -164,12 +165,12 @@ class Squad {
 /** Class representing a transfer. */
 class Transfer {
     /**
-     * creates a **Transfer** object to be used as an inner class 
+     * creates a **Transfer** object to be used as an inner class
      * for the **Team** class.
-     * 
+     *
      * @param {NodeScore} wrapper - the API wrapper object
      * @param {Object} player - player from the JSON
-     */ 
+     */
     constructor(wrapper, player) {
         const {id, name, date} = player;
 
@@ -181,7 +182,7 @@ class Transfer {
 
     /**
      * returns one player in promise form
-     * 
+     *
      * @return {Promise<Player, Error>} returns a
      * Promise containing a **Player** object.
      */
@@ -201,12 +202,12 @@ class Transfer {
 /** Class representing a transfer in. */
 class TransferIn extends Transfer {
     /**
-     * creates a **TransferIn** object to be used as an inner class 
+     * creates a **TransferIn** object to be used as an inner class
      * for the **Team** class.
-     * 
+     *
      * @param {NodeScore} wrapper - the API wrapper object
      * @param {Object} player - player from the JSON
-     */ 
+     */
     constructor(wrapper, player) {
         const {team_id, from_team} = player;
         super(wrapper, player);
@@ -221,12 +222,12 @@ class TransferIn extends Transfer {
 /** Class representing a transfer in. */
 class TransferOut extends Transfer {
     /**
-     * creates a **TransferOut** object to be used as an inner class 
+     * creates a **TransferOut** object to be used as an inner class
      * for the **Team** class.
-     * 
+     *
      * @param {NodeScore} wrapper - the API wrapper object
      * @param {Object} player - player from the JSON
-     */ 
+     */
     constructor(wrapper, player) {
         const {team_id, to_team} = player;
         super(wrapper, player);
@@ -241,11 +242,11 @@ class TransferOut extends Transfer {
 /** Class representing a team's statistics */
 class Statistics {
     /**
-     * creates a **Statistics** object to be used as an inner class 
+     * creates a **Statistics** object to be used as an inner class
      * for the **Team** class.
-     * 
+     *
      * @param {Object} statistics - statistics from the JSON
-     */ 
+     */
     constructor(statistics) {
         const st = statistics;
         const home = {
@@ -272,7 +273,7 @@ class Statistics {
 
     /**
      * returns total amount of wins
-     * 
+     *
      * @return {number} - total amount of wins
      */
     wins() {
@@ -281,7 +282,7 @@ class Statistics {
 
     /**
      * returns total amount of draws
-     * 
+     *
      * @return {number} - total amount of draws
      */
     draws() {
@@ -290,7 +291,7 @@ class Statistics {
 
     /**
      * returns total amount of losses
-     * 
+     *
      * @return {number} - total amount of losses
      */
     losses() {
@@ -299,7 +300,7 @@ class Statistics {
 
     /**
      * returns total amount of goals scored and conceded
-     * 
+     *
      * @return {goals} - total amount of goals scored and conceded
      */
     goals() {
@@ -319,23 +320,8 @@ class Statistics {
 }
 
 /**
- * creates date object from string from JSON
- * 
- * @param {string} dateString - the datestring from the JSON
- * @return {Date} - the date created from the datestring
- */
-function createDateObject(dateString) {
-    let ss = dateString.split('.');
-    return new Date(
-        parseInt(`20${ss[2]}`),
-        parseInt(ss[1]),
-        parseInt(ss[0])
-    );
-}
-
-/**
  * creates an array of members
- * 
+ *
  * @param {NodeScore} wrapper - the API wrapper object
  * @param {Object} team - team from the JSON
  * @return {Member[]} - an array of **Member** objects
@@ -356,12 +342,12 @@ function createMembers(wrapper, team) {
 }
 
 /**
- * creates a **transfers** object containing an array of **TransferIn** 
+ * creates a **transfers** object containing an array of **TransferIn**
  * objects and an array of **TransferOut** objects
- * 
+ *
  * @param {NodeScore} wrapper - the API wrapper object
  * @param {Object} team - team from the JSON
- * @return {transfers} - an object containing an array of **TransferIn** 
+ * @return {transfers} - an object containing an array of **TransferIn**
  * objects and an array of **TransferOut** objects
  */
 function createTransfers(wrapper, team) {
@@ -387,7 +373,7 @@ function createTransfers(wrapper, team) {
 
 /**
  * filters and creates a number out of a string
- * 
+ *
  * @param {string} val - the string containing the int
  * @return {number} an int created from a string
  */

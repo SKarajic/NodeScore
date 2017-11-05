@@ -4,7 +4,7 @@
   "description": "Wrapper for Football API",
   "main": "build",
   "scripts": {
-    "test": "nyc mocha --reporter spec --timeout 10000 --require babel-core/register && eslint src",
+    "test": "nyc mocha --reporter spec --timeout 10000 --require babel-core/register && eslint src --fix",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "build": "babel src -s -d build",
     "prepublishOnly": "npm test && npm run build"

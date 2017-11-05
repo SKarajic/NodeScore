@@ -1,8 +1,8 @@
 import * as http from 'http';
 
-/** 
+/**
  * returns a parsed JSON from URL
- * 
+ *
  * @param {string} url - the URL request for the JSON
  * @return {(Promise<Object>|Promise<Object[]>)} returns a parsed JSON
  */
@@ -40,12 +40,12 @@ export function getJSON(url) {
 
 /**
  * returns one or multiple objects of a certain class
- * 
+ *
  * @param {class} ClassType - the class you want to create
  * @param {NodeScore} self - the NodeScore wrapper object
  * @param {(object|object[])} values - the values that need
  * to be parsed in the Class
- * @return {(object|object[])} returns one or multiple objects 
+ * @return {(object|object[])} returns one or multiple objects
  * of a certain class
  */
 export function createObject(ClassType, self, values) {
@@ -58,4 +58,32 @@ export function createObject(ClassType, self, values) {
     } else {
         return new ClassType(self, values);
     }
+}
+
+/**
+ * creates date object from string from JSON
+ *
+ * @param {string} dateString - the datestring from the JSON
+ * @return {Date} - the date created from the datestring
+ */
+export function createDateObject(dateString) {
+    let ss = dateString.split('/');
+    return new Date(
+        parseInt(`${ss[2]}`),
+        parseInt(ss[1]),
+        parseInt(ss[0])
+    );
+}
+
+/**
+ *
+ * @param {*} date
+ * @return {string}
+ */
+export function createStringFromDate(date) {
+    return `${(date.getUTCDate() > 9 ? '' : '0')
+        + date.getUTCDate()}` +
+    `.${((date.getUTCMonth() + 1) > 9 ? '' : '0')
+        + (date.getUTCMonth() + 1)}` +
+    `.${date.getFullYear()}`;
 }

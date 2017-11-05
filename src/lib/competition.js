@@ -4,7 +4,7 @@ import Standing from './standing';
 export default class Competition {
     /**
      * creates a **Competition** object
-     * 
+     *
      * @param {NodeScore} wrapper - the API wrapper object
      * @param {object} comp - competition from the JSON
      */
@@ -19,8 +19,8 @@ export default class Competition {
 
     /**
      * returns multiple **Standing** objects in promise form
-     * 
-     * @return {Promise<Standing[], Error>} returns a Promise containing an 
+     *
+     * @return {Promise<Standing[], Error>} returns a Promise containing an
      * array of **Standing** objects.
      */
     standings() {

@@ -201,6 +201,18 @@ describe('Player', () => {
     });
 });
 
+describe('Matches', () => {
+    it('should get Matches', (done) => {
+        ns.matches()
+            .then((matches) => {
+                fs.writeJSON('test.js', matches, () => {
+                    done();
+                });
+            })
+            .catch((err) => done(err));
+    });
+});
+
 describe('Utilities', () => {
     it('should fail parsing a JSON', (done) => {
         getJSON(process.env.XML_URL)

@@ -3,8 +3,10 @@ import {
     Standing,
     Team,
     Player,
+    Match,
     getJSON,
     createObject,
+    createStringFromDate,
 } from './lib';
 import Promise from 'promise';
 import fs from 'fs-extra';
@@ -14,8 +16,8 @@ import {watch, unwatch, callWatchers} from 'watchjs';
 export default module.exports = class NodeScore {
     /**
      * creates a NodeScore wrapper object
-     * 
-     * @param {string} key - the API Key from http://football-api.com/ 
+     *
+     * @param {string} key - the API Key from http://football-api.com/
      */
     constructor(key) {
         this.url = 'http://api.football-api.com/2.0/';
@@ -26,12 +28,13 @@ export default module.exports = class NodeScore {
             standings: {},
             teams: {},
             players: {},
+            matches: {},
         };
     };
 
     /**
      * returns one competition in promise form
-     * 
+     *
      * @param {number} id - the id of the competition
      * @return {Promise<Competition, Error>} returns a
      * Promise containing  a Competition object.
@@ -50,7 +53,7 @@ export default module.exports = class NodeScore {
 
     /**
      * returns multiple competitions in promise form
-     * 
+     *
      * @return {Promise<Competition[], Error>} returns a
      * Promise containing an array of Competition objects.
      */
@@ -67,7 +70,7 @@ export default module.exports = class NodeScore {
 
     /**
      * returns one or multiple standings in promise form
-     * 
+     *
      * @param {number} compId - the id of the competition
      * @return {Promise<Standing[], Error>} returns a
      * Promise containing either a Standing object or an array of Standing
@@ -86,7 +89,7 @@ export default module.exports = class NodeScore {
 
     /**
      * returns one team in promise form
-     * 
+     *
      * @param {number} id - the id of the team
      * @return {Promise<Team, Error>} returns a
      * Promise containing  a Competition object.
@@ -105,7 +108,7 @@ export default module.exports = class NodeScore {
 
     /**
      * returns one player in promise form
-     * 
+     *
      * @param {number} id - the id of the player
      * @return {Promise<Player, Error>} returns a
      * Promise containing  a Player object.
@@ -123,12 +126,39 @@ export default module.exports = class NodeScore {
     }
 
     /**
-     * 
-     * @param {*} type 
-     * @param {*} id 
-     * @param {*} url 
+     * returns live matches in promise form
+     *
+     * @return {Promise<Match[], Error>} returns a
+     * Promise containing  a Player object.
+     */
+    matches() {
+        let self = this;
+        let fromDate = new Date();
+        let toDate = new Date();
+        fromDate.setDate(fromDate.getDate() - 1);
+        toDate.setDate(toDate.getDate() + 1);
+
+        let fromDateString = createStringFromDate(fromDate);
+        let toDateString = createStringFromDate(toDate);
+
+        return new Promise((resolve, reject) => {
+            const url = `${this.url}matches${this.auth}`
+                + `&from_date=${fromDateString}`
+                + `$to_date${toDateString}`;
+            this.getData('matches', 'all', url, (8000))
+                .then((matches) => resolve(
+                    createObject(Match, self, matches)))
+                .catch((err) => reject(err));
+        });
+    }
+
+    /**
+     *
+     * @param {*} type
+     * @param {*} id
+     * @param {*} url
      * @param {*} time
-     * 
+     *
      * @return {*}
      */
     getData(type, id, url, time) {
@@ -191,8 +221,8 @@ export default module.exports = class NodeScore {
     }
 
     /**
-     * 
-     * @param {*} callback 
+     *
+     * @param {*} callback
      */
     checkCache(callback) {
         if (!this.cacheManager.init[0]) {
