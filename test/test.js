@@ -205,9 +205,7 @@ describe('Matches', () => {
     it('should get Matches', (done) => {
         ns.matches()
             .then((matches) => {
-                fs.writeJSON('test.js', matches, () => {
-                    done();
-                });
+                done();
             })
             .catch((err) => done(err));
     });
