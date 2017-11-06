@@ -144,7 +144,7 @@ export default module.exports = class NodeScore {
         return new Promise((resolve, reject) => {
             const url = `${this.url}matches${this.auth}`
                 + `&from_date=${fromDateString}`
-                + `&to_date${toDateString}`;
+                + `&to_date=${toDateString}`;
             this.getData('matches', 'all', url, (8000))
                 .then((matches) => resolve(
                     createObject(Match, self, matches)))
