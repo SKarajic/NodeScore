@@ -10,7 +10,7 @@
     "prepublishOnly": "npm test && npm run build"
   },
   "author": "Sandi Karajic",
-  "license": "ISC",
+  "license": "MIT",
   "babel": {
     "presets": [
       "env"
