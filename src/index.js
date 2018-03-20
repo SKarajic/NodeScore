@@ -135,8 +135,8 @@ export default module.exports = class NodeScore {
         let self = this;
         let fromDate = new Date();
         let toDate = new Date();
-        fromDate.setDate(fromDate.getDate() - 1);
-        toDate.setDate(toDate.getDate() + 1);
+        fromDate.setDate(fromDate.getDate() - 2);
+        toDate.setDate(toDate.getDate() + 2);
 
         let fromDateString = createStringFromDate(fromDate);
         let toDateString = createStringFromDate(toDate);
