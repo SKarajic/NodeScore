@@ -1,6 +1,6 @@
 {
   "name": "nodescore",
-  "version": "0.2.3-alpha",
+  "version": "0.2.5-alpha",
   "description": "Wrapper for Football API",
   "main": "build",
   "scripts": {

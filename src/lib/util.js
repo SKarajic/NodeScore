@@ -67,7 +67,7 @@ export function createObject(ClassType, self, values) {
  * @return {Date} - the date created from the datestring
  */
 export function createDateObject(dateString) {
-    let ss = dateString.split('/');
+    let ss = dateString.split('.');
     return new Date(
         parseInt(`${ss[2]}`),
         parseInt(ss[1]),
